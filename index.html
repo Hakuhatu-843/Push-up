@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CHEST & ARMS TRAINER</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0d1117;color:#f5f7fa;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:520px;margin:auto;padding:18px 15px 35px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+h1{font-size:23px;margin:0}.sub{color:#8b949e;font-size:12px}.card{background:#161b22;border:1px solid #30363d;border-radius:18px;padding:17px;margin:12px 0}
+.hero{background:linear-gradient(145deg,#1c2634,#151a22)}.hero h2{font-size:18px;margin:0 0 7px}.hero p{margin:5px 0;color:#aab3bf;font-size:13px}
+.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:700;font-size:14px;cursor:pointer;background:#f0f3f6;color:#10151b}
+.btn.dark{background:#252c35;color:#fff;border:1px solid #3b444f}.btn.full{width:100%;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.stat{background:#11161d;border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:10px;color:#8b949e}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.section-title h3{margin:0;font-size:16px}
+.exercise{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #252b33}.exercise:last-child{border-bottom:0}
+.num{width:30px;height:30px;border-radius:9px;background:#252c35;display:grid;place-items:center;font-weight:800}.exinfo{flex:1}.exinfo b{font-size:14px}.exinfo small{display:block;color:#8b949e;margin-top:3px}.tag{font-size:10px;padding:4px 7px;border-radius:7px;background:#252c35;color:#c9d1d9}
+.timer{text-align:center}.time{font-size:54px;font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:2px;margin:4px}.timer-buttons{display:flex;gap:8px}.timer-buttons .btn{flex:1}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dayname{text-align:center;color:#727d89;font-size:10px;padding-bottom:3px}.day{aspect-ratio:1;border-radius:8px;background:#20262e;display:grid;place-items:center;font-size:11px;position:relative}.day.done{background:#e7ebef;color:#10151b;font-weight:800}.day.today{outline:2px solid #8b949e}.day.muted{opacity:.3}.dot{width:4px;height:4px;border-radius:50%;background:#11161d;position:absolute;bottom:4px}
+.notice{font-size:11px;line-height:1.55;color:#aab3bf}.notice strong{color:#f0f3f6}
+.hidden{display:none}.complete{padding:30px 10px;text-align:center}.complete h2{margin:5px 0}.check{font-size:42px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.progress{height:7px;background:#252c35;border-radius:99px;overflow:hidden;margin:10px 0}.bar{height:100%;width:0;background:#f0f3f6;transition:.25s}
+label{font-size:12px;color:#8b949e}
+select{background:#20262e;color:#fff;border:1px solid #3b444f;border-radius:9px;padding:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div><h1>CHEST & ARMS</h1><div class="sub">15 MIN • DAY ON / DAY OFF</div></div><button class="btn dark" onclick="resetToday()">今日をリセット</button></div>
+
+  <div id="home">
+    <div class="card hero">
+      <h2 id="statusTitle">今日のトレーニング</h2>
+      <p id="statusText">胸を最優先に、腕もまとめて鍛える。</p>
+      <div class="stats">
+        <div class="stat"><b id="total">0</b><span>トレーニング日</span></div>
+        <div class="stat"><b id="streak">0</b><span>連続記録</span></div>
+        <div class="stat"><b>15</b><span>目標分</span></div>
+      </div>
+      <button id="startBtn" class="btn full" onclick="startWorkout()">トレーニング開始</button>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><h3>今日のメニュー</h3><span class="tag">胸メイン</span></div>
+      <div id="menu"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><h3>トレーニングカレンダー</h3><select id="monthSelect" onchange="renderCalendar()"></select></div>
+      <div class="calendar" id="calendar"></div>
+    </div>
+
+    <div class="card notice">
+      <strong>手首について</strong><br>
+      オーバーハンドパスで激痛が出るとのことなので、痛みが出る動作は行わないでください。
+      プッシュアップバー使用中も手首・肘・肩に痛みが出たら中止してください。
+      「効いている痛み」と「関節の痛み」は別なので、関節の痛みを我慢して続けないでください。
+    </div>
+  </div>
+
+  <div id="workout" class="hidden">
+    <div class="card">
+      <div class="row"><span id="stepLabel">1 / 6</span><span id="category" class="tag">CHEST</span></div>
+      <h2 id="exName">---</h2><p id="exDesc" class="sub"></p>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="timer"><div class="time" id="time">00:30</div><div class="sub">セット中の目安タイマー</div></div>
+      <div class="timer-buttons"><button class="btn dark" onclick="toggleTimer()" id="timerBtn">開始</button><button class="btn dark" onclick="resetTimer()">リセット</button></div>
+      <button class="btn full" onclick="nextExercise()" id="nextBtn">完了 → 次へ</button>
+    </div>
+    <div class="card"><div class="notice"><strong>フォーム重視。</strong>反動を使わず、痛みが出ない範囲で。回数は目安です。</div></div>
+  </div>
+
+  <div id="finish" class="hidden">
+    <div class="card complete"><div class="check">✓</div><h2>トレーニング完了！</h2><p class="sub">今日の記録をカレンダーに追加しました。</p><button class="btn full" onclick="goHome()">ホームへ</button></div>
+  </div>
+</div>
+
+<script>
+const exercises=[
+ {name:"ワイド・プッシュアップバー",cat:"CHEST",sets:"2セット × 8〜12回",desc:"胸を開き、ゆっくり下ろす。"},
+ {name:"ノーマル・プッシュアップバー",cat:"CHEST",sets:"2セット × 8〜12回",desc:"肩幅程度。胸をバーの高さまでコントロール。"},
+ {name:"ダイヤモンド・プッシュアップ",cat:"TRICEPS",sets:"2セット × 8〜15回",desc:"必須種目。20回できても、まずフォーム優先。"},
+ {name:"クロスアーム・プッシュアップ",cat:"ARMS",sets:"2セット × 6〜10回",desc:"画像のように腕をクロスさせて行う種目。無理に深く下ろさない。"},
+ {name:"ゆっくりプッシュアップバー",cat:"CHEST",sets:"1セット × 6〜10回",desc:"3秒で下ろす→軽く止める→押す。"},
+ {name:"クールダウン",cat:"FINISH",sets:"約1分",desc:"肩・胸・腕を軽く動かして終了。痛い場所は無理に伸ばさない。"}
+];
+let current=0, seconds=30, timer=null, running=false;
+const key="chestArmsTraining_v1", data=JSON.parse(localStorage.getItem(key)||"{}");
+
+function save(){localStorage.setItem(key,JSON.stringify(data))}
+function dateKey(d=new Date()){return d.toISOString().slice(0,10)}
+function startWorkout(){current=0;document.getElementById("home").classList.add("hidden");document.getElementById("workout").classList.remove("hidden");document.getElementById("finish").classList.add("hidden");showExercise()}
+function showExercise(){
+ const e=exercises[current];document.getElementById("stepLabel").textContent=`${current+1} / ${exercises.length}`;
+ document.getElementById("category").textContent=e.cat;document.getElementById("exName").textContent=e.name;
+ document.getElementById("exDesc").textContent=e.sets+"　"+e.desc;document.getElementById("bar").style.width=((current)/exercises.length*100)+"%";
+ document.getElementById("nextBtn").textContent=current===exercises.length-1?"トレーニング完了 ✓":"完了 → 次へ";
+ resetTimer();
+ toggleTimer();
+}
+function startTimer(){
+ clearInterval(timer);running=true;document.getElementById("timerBtn").textContent="停止";
+ timer=setInterval(()=>{seconds--;renderTime();if(seconds<=0){clearInterval(timer);running=false;document.getElementById("timerBtn").textContent="開始";navigator.vibrate?.(120);}},1000)
+}
+function toggleTimer(){
+ if(running){clearInterval(timer);running=false;document.getElementById("timerBtn").textContent="再開";return}
+ startTimer()
+}
+function resetTimer(){clearInterval(timer);running=false;seconds=current===5?60:30;document.getElementById("timerBtn").textContent="開始";renderTime()}
+function renderTime(){document.getElementById("time").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+function nextExercise(){
+ if(current<exercises.length-1){current++;showExercise()}else{data[dateKey()]=true;save();document.getElementById("workout").classList.add("hidden");document.getElementById("finish").classList.remove("hidden")}
+}
+function goHome(){document.getElementById("finish").classList.add("hidden");document.getElementById("home").classList.remove("hidden");render()}
+function resetToday(){if(confirm("今日のトレーニング記録を削除しますか？")){delete data[dateKey()];save();render()}}
+function countDone(){return Object.values(data).filter(Boolean).length}
+function calcStreak(){
+ let n=0,d=new Date();
+ while(data[dateKey(d)]){n++;d.setDate(d.getDate()-1)}
+ return n
+}
+function renderMenu(){
+ document.getElementById("menu").innerHTML=exercises.map((e,i)=>`<div class="exercise"><div class="num">${i+1}</div><div class="exinfo"><b>${e.name}</b><small>${e.sets}</small></div><span class="tag">${e.cat}</span></div>`).join("")
+}
+function renderCalendar(){
+ const sel=document.getElementById("monthSelect"), [y,m]=sel.value.split("-").map(Number), first=new Date(y,m-1,1), last=new Date(y,m,0);
+ let h=["日","月","火","水","木","金","土"].map(x=>`<div class="dayname">${x}</div>`).join("");
+ for(let i=0;i<first.getDay();i++)h+=`<div class="day muted"></div>`;
+ for(let d=1;d<=last.getDate();d++){const k=`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`,done=data[k],today=k===dateKey();h+=`<div class="day ${done?"done":""} ${today?"today":""}">${d}${done?'<span class="dot"></span>':""}</div>`}
+ document.getElementById("calendar").innerHTML=h
+}
+function initMonths(){
+ const s=document.getElementById("monthSelect"),now=new Date();
+ for(let i=-5;i<=6;i++){let d=new Date(now.getFullYear(),now.getMonth()+i,1),v=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;let o=document.createElement("option");o.value=v;o.textContent=`${d.getFullYear()}年${d.getMonth()+1}月`;if(i===0)o.selected=true;s.appendChild(o)}
+}
+function render(){
+ document.getElementById("total").textContent=countDone();document.getElementById("streak").textContent=calcStreak();
+ const today=dateKey(), done=!!data[today];
+ document.getElementById("statusTitle").textContent=done?"今日のトレーニング完了！":"今日のトレーニング";
+ document.getElementById("statusText").textContent=done?"記録済み。次は明日ではなく、1日休んでから。":"胸を最優先に、腕もまとめて鍛える。";
+ document.getElementById("startBtn").textContent=done?"もう一度トレーニングする":"トレーニング開始";
+ renderMenu();renderCalendar()
+}
+initMonths();render();
+</script>
+</body>
+</html>
