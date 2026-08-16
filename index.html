@@ -2,146 +2,407 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CHEST & ARMS TRAINER</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>PUSH PROTOCOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0d1117;color:#f5f7fa;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.app{max-width:520px;margin:auto;padding:18px 15px 35px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-h1{font-size:23px;margin:0}.sub{color:#8b949e;font-size:12px}.card{background:#161b22;border:1px solid #30363d;border-radius:18px;padding:17px;margin:12px 0}
-.hero{background:linear-gradient(145deg,#1c2634,#151a22)}.hero h2{font-size:18px;margin:0 0 7px}.hero p{margin:5px 0;color:#aab3bf;font-size:13px}
-.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:700;font-size:14px;cursor:pointer;background:#f0f3f6;color:#10151b}
-.btn.dark{background:#252c35;color:#fff;border:1px solid #3b444f}.btn.full{width:100%;margin-top:12px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.stat{background:#11161d;border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:10px;color:#8b949e}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.section-title h3{margin:0;font-size:16px}
-.exercise{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #252b33}.exercise:last-child{border-bottom:0}
-.num{width:30px;height:30px;border-radius:9px;background:#252c35;display:grid;place-items:center;font-weight:800}.exinfo{flex:1}.exinfo b{font-size:14px}.exinfo small{display:block;color:#8b949e;margin-top:3px}.tag{font-size:10px;padding:4px 7px;border-radius:7px;background:#252c35;color:#c9d1d9}
-.timer{text-align:center}.time{font-size:54px;font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:2px;margin:4px}.timer-buttons{display:flex;gap:8px}.timer-buttons .btn{flex:1}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dayname{text-align:center;color:#727d89;font-size:10px;padding-bottom:3px}.day{aspect-ratio:1;border-radius:8px;background:#20262e;display:grid;place-items:center;font-size:11px;position:relative}.day.done{background:#e7ebef;color:#10151b;font-weight:800}.day.today{outline:2px solid #8b949e}.day.muted{opacity:.3}.dot{width:4px;height:4px;border-radius:50%;background:#11161d;position:absolute;bottom:4px}
-.notice{font-size:11px;line-height:1.55;color:#aab3bf}.notice strong{color:#f0f3f6}
-.hidden{display:none}.complete{padding:30px 10px;text-align:center}.complete h2{margin:5px 0}.check{font-size:42px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.progress{height:7px;background:#252c35;border-radius:99px;overflow:hidden;margin:10px 0}.bar{height:100%;width:0;background:#f0f3f6;transition:.25s}
-label{font-size:12px;color:#8b949e}
-select{background:#20262e;color:#fff;border:1px solid #3b444f;border-radius:9px;padding:8px}
+:root{
+  --bg:#0a0b0d; --bg2:#0d0f12;
+  --surface:#16181c; --surface2:#1e2126; --border:#2b2f35;
+  --text:#f3f4f6; --dim:#868d97; --dim2:#5b6169;
+  --flame:#b7e332; --flame-dim:#293219;
+  --steel:#5b9cff; --steel-dim:#1c2a3f;
+  --chalk:#eeece4;
+  --ok:#3ddc84; --ok-dim:#12301f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:
+  radial-gradient(circle at 15% -10%, #171a1f 0%, transparent 45%),
+  radial-gradient(circle at 100% 0%, #14181d 0%, transparent 40%),
+  var(--bg);
+  color:var(--text);font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.app{max-width:480px;margin:auto;min-height:100vh;padding:0 16px 40px}
+.mono{font-family:'JetBrains Mono',monospace}
+.display{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+
+/* header */
+.topbar{display:flex;justify-content:space-between;align-items:flex-end;padding:22px 2px 16px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand-eyebrow{font-size:10px;letter-spacing:2.5px;color:var(--flame);font-weight:700;margin-bottom:4px}
+.brand h1{display:block;font-size:26px;margin:0;line-height:1}
+.iconbtn{background:var(--surface);border:1px solid var(--border);color:var(--dim);border-radius:10px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:15px}
+.iconbtn:active{background:var(--surface2)}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin:12px 0}
+.hero{background:linear-gradient(155deg,#171a12 0%,#151719 55%,#131518 100%);border-color:#2c331a;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:-40%;right:-20%;width:200px;height:200px;background:radial-gradient(circle,rgba(183,227,50,.16),transparent 70%);pointer-events:none}
+.hero-status{font-size:11px;letter-spacing:1.5px;color:var(--flame);font-weight:700;margin-bottom:6px}
+.hero h2{font-size:20px;margin:0 0 6px;line-height:1.25}
+.hero p{margin:0;color:var(--dim);font-size:13px;line-height:1.5}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center}
+.stat b{display:block;font-size:22px;font-family:'JetBrains Mono',monospace;font-weight:700}
+.stat span{font-size:9.5px;color:var(--dim2);letter-spacing:1px;text-transform:uppercase}
+
+.btn{border:0;border-radius:14px;padding:16px;font-weight:700;font-size:14.5px;letter-spacing:.5px;cursor:pointer;width:100%;font-family:'Inter',sans-serif}
+.btn-flame{background:var(--flame);color:#141c04;box-shadow:0 8px 20px -8px rgba(183,227,50,.5)}
+.btn-flame:active{transform:scale(.98)}
+.btn-steel{background:var(--steel);color:#081222}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-row{display:flex;gap:9px;margin-top:10px}
+.btn-row .btn{flex:1}
+
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title h3{margin:0;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.tag{font-size:10px;font-weight:700;letter-spacing:1px;padding:5px 9px;border-radius:8px;background:var(--surface2);color:var(--dim);border:1px solid var(--border)}
+.tag.flame{background:var(--flame-dim);color:var(--flame);border-color:#3e4a22}
+.tag.steel{background:var(--steel-dim);color:var(--steel);border-color:#22385a}
+
+/* exercise list */
+.exlist{counter-reset:ex}
+.exrow{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}
+.exrow:last-child{border-bottom:0}
+.exnum{font-family:'Anton',sans-serif;font-size:19px;color:var(--dim2);width:26px;flex-shrink:0}
+.exinfo{flex:1;min-width:0}
+.exinfo b{font-size:14px;display:block}
+.exinfo small{display:block;color:var(--dim);margin-top:2px;font-size:11.5px}
+
+/* calendar */
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dayname{text-align:center;color:var(--dim2);font-size:9.5px;padding-bottom:4px;letter-spacing:.5px}
+.day{aspect-ratio:1;border-radius:9px;background:var(--surface2);display:grid;place-items:center;font-size:11px;color:var(--dim);position:relative;font-family:'JetBrains Mono',monospace}
+.day.done{background:var(--flame);color:#141c04;font-weight:700}
+.day.today{box-shadow:inset 0 0 0 1.5px var(--steel)}
+.day.muted{opacity:0;pointer-events:none}
+select{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:7px 9px;font-family:'Inter',sans-serif;font-size:12px}
+
+.notice{font-size:11.5px;line-height:1.65;color:var(--dim)}
+.notice strong{color:var(--text);display:block;margin-bottom:4px;font-size:12px}
+
+.hidden{display:none !important}
+
+/* ===== workout screen ===== */
+.wk-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.wk-step{font-size:11px;color:var(--dim);letter-spacing:1px;font-family:'JetBrains Mono',monospace}
+.progress{height:5px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:14px 0 18px}
+.bar{height:100%;width:0;background:var(--flame);transition:width .35s ease}
+
+.tally{display:flex;gap:6px;margin:14px 0}
+.mark{flex:1;height:8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border)}
+.mark.filled{background:var(--flame);border-color:var(--flame)}
+.mark.current{background:var(--surface2);border:1.5px dashed var(--flame)}
+
+.exname{font-size:25px;margin:2px 0 6px;line-height:1.15}
+.exdesc{color:var(--dim);font-size:13px;line-height:1.55;margin:0}
+.reps-box{display:flex;align-items:baseline;gap:8px;margin:22px 0 6px}
+.reps-box .n{font-family:'Anton',sans-serif;font-size:44px;color:var(--flame);line-height:1}
+.reps-box .u{font-size:13px;color:var(--dim);letter-spacing:.5px}
+.setlabel{font-size:12px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+
+/* rest ring */
+.rest-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 4px}
+.ring-box{position:relative;width:190px;height:190px;margin:6px auto 4px}
+.ring-box svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring-bg{fill:none;stroke:var(--surface2);stroke-width:9}
+.ring-fg{fill:none;stroke:var(--steel);stroke-width:9;stroke-linecap:round}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-center .time{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;letter-spacing:1px}
+.ring-center .label{font-size:10.5px;color:var(--steel);letter-spacing:2px;margin-top:2px}
+.next-preview{font-size:12px;color:var(--dim);text-align:center;margin-top:4px}
+.next-preview b{color:var(--text)}
+
+.finish-hero{padding:34px 10px 10px;text-align:center}
+.check-ring{width:64px;height:64px;border-radius:50%;background:var(--ok-dim);border:1.5px solid var(--ok);display:grid;place-items:center;margin:0 auto 16px;font-size:28px;color:var(--ok)}
+.finish-hero h2{margin:0 0 6px;font-size:23px}
+.finish-hero p{color:var(--dim);font-size:13px;margin:0 0 22px}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><h1>CHEST & ARMS</h1><div class="sub">15 MIN • DAY ON / DAY OFF</div></div><button class="btn dark" onclick="resetToday()">今日をリセット</button></div>
 
+  <div class="topbar">
+    <div class="brand"><div class="brand-eyebrow">DAY ON / DAY OFF</div><h1 class="display">PUSH PROTOCOL</h1></div>
+    <button class="iconbtn" onclick="resetToday()" title="今日をリセット">↺</button>
+  </div>
+
+  <!-- HOME -->
   <div id="home">
     <div class="card hero">
+      <div class="hero-status" id="statusTag">TODAY</div>
       <h2 id="statusTitle">今日のトレーニング</h2>
       <p id="statusText">胸を最優先に、腕もまとめて鍛える。</p>
       <div class="stats">
-        <div class="stat"><b id="total">0</b><span>トレーニング日</span></div>
-        <div class="stat"><b id="streak">0</b><span>連続記録</span></div>
-        <div class="stat"><b>15</b><span>目標分</span></div>
+        <div class="stat"><b id="total">0</b><span>Sessions</span></div>
+        <div class="stat"><b id="streak">0</b><span>Streak</span></div>
+        <div class="stat"><b>10</b><span>Sets</span></div>
       </div>
-      <button id="startBtn" class="btn full" onclick="startWorkout()">トレーニング開始</button>
+      <button id="startBtn" class="btn btn-flame" style="margin-top:16px" onclick="startWorkout()">トレーニング開始</button>
     </div>
 
     <div class="card">
-      <div class="section-title"><h3>今日のメニュー</h3><span class="tag">胸メイン</span></div>
-      <div id="menu"></div>
+      <div class="section-title"><h3>今日のメニュー</h3><span class="tag flame">胸メイン</span></div>
+      <div class="exlist" id="menu"></div>
     </div>
 
     <div class="card">
-      <div class="section-title"><h3>トレーニングカレンダー</h3><select id="monthSelect" onchange="renderCalendar()"></select></div>
+      <div class="section-title"><h3>カレンダー</h3><select id="monthSelect" onchange="renderCalendar()"></select></div>
       <div class="calendar" id="calendar"></div>
     </div>
 
-    <div class="card notice">
-      <strong>手首について</strong><br>
-      オーバーハンドパスで激痛が出るとのことなので、痛みが出る動作は行わないでください。
-      プッシュアップバー使用中も手首・肘・肩に痛みが出たら中止してください。
-      「効いている痛み」と「関節の痛み」は別なので、関節の痛みを我慢して続けないでください。
-    </div>
   </div>
 
+  <!-- WORKOUT: WORK PHASE -->
   <div id="workout" class="hidden">
-    <div class="card">
-      <div class="row"><span id="stepLabel">1 / 6</span><span id="category" class="tag">CHEST</span></div>
-      <h2 id="exName">---</h2><p id="exDesc" class="sub"></p>
-      <div class="progress"><div class="bar" id="bar"></div></div>
-      <div class="timer"><div class="time" id="time">00:30</div><div class="sub">セット中の目安タイマー</div></div>
-      <div class="timer-buttons"><button class="btn dark" onclick="toggleTimer()" id="timerBtn">開始</button><button class="btn dark" onclick="resetTimer()">リセット</button></div>
-      <button class="btn full" onclick="nextExercise()" id="nextBtn">完了 → 次へ</button>
+    <div class="wk-top">
+      <span class="wk-step mono" id="stepLabel">EX 1 / 6</span>
+      <span class="tag flame" id="category">CHEST</span>
     </div>
-    <div class="card"><div class="notice"><strong>フォーム重視。</strong>反動を使わず、痛みが出ない範囲で。回数は目安です。</div></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <div class="card">
+      <div class="setlabel" id="setLabel">SET 1 / 2</div>
+      <h2 class="exname display" id="exName">---</h2>
+      <p class="exdesc" id="exDesc"></p>
+
+      <div class="tally" id="tally"></div>
+
+      <div class="reps-box"><span class="n" id="repsN">10</span><span class="u" id="repsU">回 目標</span></div>
+
+      <button class="btn btn-flame" onclick="completeSet()" id="nextBtn" style="margin-top:6px">セット完了 → レストへ</button>
+    </div>
+    <div class="card notice"><strong>フォーム重視。</strong>反動を使わず、痛みが出ない範囲で。回数は目安 — 焦らなくていい。</div>
   </div>
 
-  <div id="finish" class="hidden">
-    <div class="card complete"><div class="check">✓</div><h2>トレーニング完了！</h2><p class="sub">今日の記録をカレンダーに追加しました。</p><button class="btn full" onclick="goHome()">ホームへ</button></div>
+  <!-- WORKOUT: REST PHASE -->
+  <div id="restScreen" class="hidden">
+    <div class="wk-top">
+      <span class="wk-step mono" id="stepLabelRest">EX 1 / 6</span>
+      <span class="tag steel">REST</span>
+    </div>
+    <div class="progress"><div class="bar" id="barRest"></div></div>
+
+    <div class="card rest-wrap">
+      <div class="ring-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="43"></circle>
+          <circle class="ring-fg" id="ringFg" cx="50" cy="50" r="43" stroke-dasharray="270.2" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="ring-center">
+          <div class="time mono" id="restTime">00:45</div>
+          <div class="label">REST</div>
+        </div>
+      </div>
+      <div class="next-preview" id="nextPreview">次: --</div>
+      <div class="btn-row" style="width:100%">
+        <button class="btn btn-ghost" onclick="toggleRestPause()" id="pauseBtn">一時停止</button>
+        <button class="btn btn-ghost" onclick="skipRest()">スキップ</button>
+      </div>
+    </div>
   </div>
+
+  <!-- FINISH -->
+  <div id="finish" class="hidden">
+    <div class="card finish-hero">
+      <div class="check-ring">✓</div>
+      <h2 class="display">COMPLETE</h2>
+      <p>今日の記録をカレンダーに追加しました。お疲れさま。</p>
+      <button class="btn btn-flame" onclick="goHome()">ホームへ</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
-const exercises=[
- {name:"ワイド・プッシュアップバー",cat:"CHEST",sets:"2セット × 8〜12回",desc:"胸を開き、ゆっくり下ろす。"},
- {name:"ノーマル・プッシュアップバー",cat:"CHEST",sets:"2セット × 8〜12回",desc:"肩幅程度。胸をバーの高さまでコントロール。"},
- {name:"ダイヤモンド・プッシュアップ",cat:"TRICEPS",sets:"2セット × 8〜15回",desc:"必須種目。20回できても、まずフォーム優先。"},
- {name:"クロスアーム・プッシュアップ",cat:"ARMS",sets:"2セット × 6〜10回",desc:"画像のように腕をクロスさせて行う種目。無理に深く下ろさない。"},
- {name:"ゆっくりプッシュアップバー",cat:"CHEST",sets:"1セット × 6〜10回",desc:"3秒で下ろす→軽く止める→押す。"},
- {name:"クールダウン",cat:"FINISH",sets:"約1分",desc:"肩・胸・腕を軽く動かして終了。痛い場所は無理に伸ばさない。"}
-];
-let current=0, seconds=30, timer=null, running=false;
-const key="chestArmsTraining_v1", data=JSON.parse(localStorage.getItem(key)||"{}");
+const REST_SECONDS = 45; // 全セット間の休憩（少し長めに設定）
 
+const exercises=[
+ {name:"ワイド・プッシュアップバー",cat:"CHEST",sets:2,reps:"8〜12",desc:"胸を開き、ゆっくり下ろす。"},
+ {name:"ノーマル・プッシュアップバー",cat:"CHEST",sets:2,reps:"8〜12",desc:"肩幅程度。胸をバーの高さまでコントロール。"},
+ {name:"ダイヤモンド・プッシュアップ",cat:"TRICEPS",sets:2,reps:"8〜15",desc:"必須種目。20回できても、まずフォーム優先。"},
+ {name:"クロスアーム・プッシュアップ",cat:"ARMS",sets:2,reps:"6〜10",desc:"腕をクロスさせる。手首などに痛みが出たら中止。"},
+ {name:"ゆっくりプッシュアップバー",cat:"CHEST",sets:1,reps:"6〜10",desc:"3秒で下ろす→軽く止める→押す。"},
+ {name:"クールダウン",cat:"FINISH",sets:1,reps:"約1分",desc:"肩・胸・腕を軽く動かして終了。痛い場所は無理に伸ばさない。"}
+];
+
+let current=0, currentSet=1, restRemaining=REST_SECONDS, restTimer=null, restPaused=false;
+const totalSets = exercises.reduce((a,e)=>a+e.sets,0);
+const RING_C = 2*Math.PI*43;
+
+const key="pushProtocol_v1", data=JSON.parse(localStorage.getItem(key)||"{}");
 function save(){localStorage.setItem(key,JSON.stringify(data))}
 function dateKey(d=new Date()){return d.toISOString().slice(0,10)}
-function startWorkout(){current=0;document.getElementById("home").classList.add("hidden");document.getElementById("workout").classList.remove("hidden");document.getElementById("finish").classList.add("hidden");showExercise()}
-function showExercise(){
- const e=exercises[current];document.getElementById("stepLabel").textContent=`${current+1} / ${exercises.length}`;
- document.getElementById("category").textContent=e.cat;document.getElementById("exName").textContent=e.name;
- document.getElementById("exDesc").textContent=e.sets+"　"+e.desc;document.getElementById("bar").style.width=((current)/exercises.length*100)+"%";
- document.getElementById("nextBtn").textContent=current===exercises.length-1?"トレーニング完了 ✓":"完了 → 次へ";
- resetTimer();
- toggleTimer();
+
+function setsBefore(idx){let s=0;for(let i=0;i<idx;i++)s+=exercises[i].sets;return s}
+
+function startWorkout(){
+  current=0; currentSet=1;
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("finish").classList.add("hidden");
+  document.getElementById("restScreen").classList.add("hidden");
+  document.getElementById("workout").classList.remove("hidden");
+  showWork();
 }
-function startTimer(){
- clearInterval(timer);running=true;document.getElementById("timerBtn").textContent="停止";
- timer=setInterval(()=>{seconds--;renderTime();if(seconds<=0){clearInterval(timer);running=false;document.getElementById("timerBtn").textContent="開始";navigator.vibrate?.(120);}},1000)
+
+function showWork(){
+  const e=exercises[current];
+  document.getElementById("stepLabel").textContent=`EX ${current+1} / ${exercises.length}`;
+  document.getElementById("category").textContent=e.cat;
+  document.getElementById("setLabel").textContent=`SET ${currentSet} / ${e.sets}`;
+  document.getElementById("exName").textContent=e.name;
+  document.getElementById("exDesc").textContent=e.desc;
+  document.getElementById("repsN").textContent=e.reps;
+  document.getElementById("repsU").textContent=e.cat==="FINISH"?"":"回 目標";
+
+  const doneSets=setsBefore(current)+(currentSet-1);
+  document.getElementById("bar").style.width=(doneSets/totalSets*100)+"%";
+
+  // tally marks for this exercise
+  document.getElementById("tally").innerHTML = Array.from({length:e.sets}).map((_,i)=>{
+    const n=i+1;
+    const cls = n<currentSet ? "filled" : (n===currentSet ? "current" : "");
+    return `<div class="mark ${cls}"></div>`;
+  }).join("");
+
+  const isLastSetOfLast = current===exercises.length-1 && currentSet===e.sets;
+  document.getElementById("nextBtn").textContent = isLastSetOfLast ? "完了 → トレーニング終了" : "セット完了 → レストへ";
+
+  document.getElementById("workout").classList.remove("hidden");
+  document.getElementById("restScreen").classList.add("hidden");
 }
-function toggleTimer(){
- if(running){clearInterval(timer);running=false;document.getElementById("timerBtn").textContent="再開";return}
- startTimer()
+
+function completeSet(){
+  const e=exercises[current];
+  const isLastSetOfLast = current===exercises.length-1 && currentSet===e.sets;
+  if(isLastSetOfLast){ finishWorkout(); return; }
+  startRest();
 }
-function resetTimer(){clearInterval(timer);running=false;seconds=current===5?60:30;document.getElementById("timerBtn").textContent="開始";renderTime()}
-function renderTime(){document.getElementById("time").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
-function nextExercise(){
- if(current<exercises.length-1){current++;showExercise()}else{data[dateKey()]=true;save();document.getElementById("workout").classList.add("hidden");document.getElementById("finish").classList.remove("hidden")}
+
+function startRest(){
+  restRemaining=REST_SECONDS; restPaused=false;
+  document.getElementById("pauseBtn").textContent="一時停止";
+  document.getElementById("workout").classList.add("hidden");
+  document.getElementById("restScreen").classList.remove("hidden");
+
+  const e=exercises[current];
+  document.getElementById("stepLabelRest").textContent=`EX ${current+1} / ${exercises.length}`;
+  const doneSets=setsBefore(current)+currentSet;
+  document.getElementById("barRest").style.width=(doneSets/totalSets*100)+"%";
+
+  // preview next
+  let nextText;
+  if(currentSet<e.sets){ nextText = `<b>${e.name}</b> SET ${currentSet+1}/${e.sets}`; }
+  else{ const ne=exercises[current+1]; nextText = `<b>${ne.name}</b> SET 1/${ne.sets}`; }
+  document.getElementById("nextPreview").innerHTML = "次: "+nextText;
+
+  const ring=document.getElementById("ringFg");
+  ring.style.transition="none";
+  ring.style.strokeDasharray=RING_C;
+  ring.style.strokeDashoffset=0;
+  // force reflow then animate to full offset over REST_SECONDS
+  ring.getBoundingClientRect();
+  ring.style.transition=`stroke-dashoffset ${REST_SECONDS}s linear`;
+  ring.style.strokeDashoffset=RING_C;
+
+  renderRestTime();
+  clearInterval(restTimer);
+  restTimer=setInterval(()=>{
+    if(restPaused) return;
+    restRemaining--;
+    renderRestTime();
+    if(restRemaining<=0){ clearInterval(restTimer); navigator.vibrate?.(120); advanceAfterRest(); }
+  },1000);
 }
-function goHome(){document.getElementById("finish").classList.add("hidden");document.getElementById("home").classList.remove("hidden");render()}
-function resetToday(){if(confirm("今日のトレーニング記録を削除しますか？")){delete data[dateKey()];save();render()}}
+
+function renderRestTime(){
+  document.getElementById("restTime").textContent =
+    String(Math.floor(Math.max(restRemaining,0)/60)).padStart(2,"0")+":"+String(Math.max(restRemaining,0)%60).padStart(2,"0");
+}
+
+function toggleRestPause(){
+  restPaused=!restPaused;
+  document.getElementById("pauseBtn").textContent = restPaused ? "再開" : "一時停止";
+  const ring=document.getElementById("ringFg");
+  const cs=getComputedStyle(ring);
+  if(restPaused){
+    // freeze the ring at its current computed offset
+    ring.style.strokeDashoffset = cs.strokeDashoffset;
+    ring.style.transition="none";
+  } else {
+    ring.getBoundingClientRect();
+    ring.style.transition=`stroke-dashoffset ${restRemaining}s linear`;
+    ring.style.strokeDashoffset=RING_C;
+  }
+}
+
+function skipRest(){ clearInterval(restTimer); advanceAfterRest(); }
+
+function advanceAfterRest(){
+  const e=exercises[current];
+  if(currentSet<e.sets){ currentSet++; }
+  else{ current++; currentSet=1; }
+  showWork();
+}
+
+function finishWorkout(){
+  data[dateKey()]=true; save();
+  document.getElementById("workout").classList.add("hidden");
+  document.getElementById("restScreen").classList.add("hidden");
+  document.getElementById("finish").classList.remove("hidden");
+}
+
+function goHome(){
+  document.getElementById("finish").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+  render();
+}
+function resetToday(){
+  if(confirm("今日のトレーニング記録を削除しますか？")){ delete data[dateKey()]; save(); render(); }
+}
 function countDone(){return Object.values(data).filter(Boolean).length}
 function calcStreak(){
- let n=0,d=new Date();
- while(data[dateKey(d)]){n++;d.setDate(d.getDate()-1)}
- return n
+  let n=0,d=new Date();
+  while(data[dateKey(d)]){n++;d.setDate(d.getDate()-1)}
+  return n;
 }
 function renderMenu(){
- document.getElementById("menu").innerHTML=exercises.map((e,i)=>`<div class="exercise"><div class="num">${i+1}</div><div class="exinfo"><b>${e.name}</b><small>${e.sets}</small></div><span class="tag">${e.cat}</span></div>`).join("")
+  document.getElementById("menu").innerHTML=exercises.map((e,i)=>
+    `<div class="exrow"><div class="exnum">${String(i+1).padStart(2,"0")}</div><div class="exinfo"><b>${e.name}</b><small>${e.sets}セット × ${e.reps}${e.cat==="FINISH"?"":"回"}</small></div><span class="tag">${e.cat}</span></div>`
+  ).join("");
 }
 function renderCalendar(){
- const sel=document.getElementById("monthSelect"), [y,m]=sel.value.split("-").map(Number), first=new Date(y,m-1,1), last=new Date(y,m,0);
- let h=["日","月","火","水","木","金","土"].map(x=>`<div class="dayname">${x}</div>`).join("");
- for(let i=0;i<first.getDay();i++)h+=`<div class="day muted"></div>`;
- for(let d=1;d<=last.getDate();d++){const k=`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`,done=data[k],today=k===dateKey();h+=`<div class="day ${done?"done":""} ${today?"today":""}">${d}${done?'<span class="dot"></span>':""}</div>`}
- document.getElementById("calendar").innerHTML=h
+  const sel=document.getElementById("monthSelect"), [y,m]=sel.value.split("-").map(Number), first=new Date(y,m-1,1), last=new Date(y,m,0);
+  let h=["日","月","火","水","木","金","土"].map(x=>`<div class="dayname">${x}</div>`).join("");
+  for(let i=0;i<first.getDay();i++)h+=`<div class="day muted"></div>`;
+  for(let d=1; d<=last.getDate(); d++){
+    const k=`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`, done=data[k], today=k===dateKey();
+    h+=`<div class="day ${done?"done":""} ${today?"today":""}">${d}</div>`;
+  }
+  document.getElementById("calendar").innerHTML=h;
 }
 function initMonths(){
- const s=document.getElementById("monthSelect"),now=new Date();
- for(let i=-5;i<=6;i++){let d=new Date(now.getFullYear(),now.getMonth()+i,1),v=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;let o=document.createElement("option");o.value=v;o.textContent=`${d.getFullYear()}年${d.getMonth()+1}月`;if(i===0)o.selected=true;s.appendChild(o)}
+  const s=document.getElementById("monthSelect"), now=new Date();
+  for(let i=-5;i<=6;i++){
+    let d=new Date(now.getFullYear(),now.getMonth()+i,1), v=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    let o=document.createElement("option"); o.value=v; o.textContent=`${d.getFullYear()}年${d.getMonth()+1}月`;
+    if(i===0)o.selected=true; s.appendChild(o);
+  }
 }
 function render(){
- document.getElementById("total").textContent=countDone();document.getElementById("streak").textContent=calcStreak();
- const today=dateKey(), done=!!data[today];
- document.getElementById("statusTitle").textContent=done?"今日のトレーニング完了！":"今日のトレーニング";
- document.getElementById("statusText").textContent=done?"記録済み。次は明日ではなく、1日休んでから。":"胸を最優先に、腕もまとめて鍛える。";
- document.getElementById("startBtn").textContent=done?"もう一度トレーニングする":"トレーニング開始";
- renderMenu();renderCalendar()
+  document.getElementById("total").textContent=countDone();
+  document.getElementById("streak").textContent=calcStreak();
+  const today=dateKey(), done=!!data[today];
+  document.getElementById("statusTag").textContent = done ? "DONE" : "TODAY";
+  document.getElementById("statusTitle").textContent = done ? "今日のトレーニング完了！" : "今日のトレーニング";
+  document.getElementById("statusText").textContent = done ? "記録済み。次は1日休んでから。" : "胸を最優先に、腕もまとめて鍛える。";
+  document.getElementById("startBtn").textContent = done ? "もう一度トレーニングする" : "トレーニング開始";
+  renderMenu(); renderCalendar();
 }
-initMonths();render();
+initMonths(); render();
 </script>
 </body>
 </html>
