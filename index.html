@@ -348,8 +348,18 @@ function advanceAfterRest(){
   showWork();
 }
 
+function recordTrainingAI(part){
+  const key="training_ai_records";
+  const records=JSON.parse(localStorage.getItem(key)||"[]");
+  const d=new Date();
+  const date=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  records.push({id:Date.now()+Math.random(),date,part,intensity:"重め",source:"CHEST&ARM"});
+  localStorage.setItem(key,JSON.stringify(records));
+}
+
 function finishWorkout(){
   data[dateKey()]=true; save();
+  recordTrainingAI("胸・腕");
   document.getElementById("workout").classList.add("hidden");
   document.getElementById("restScreen").classList.add("hidden");
   document.getElementById("finish").classList.remove("hidden");
